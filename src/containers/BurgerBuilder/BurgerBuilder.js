@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Aux from '../../hoc/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -21,7 +23,9 @@ const BurgerBuilder = props => {
         },
         price: 4.00
     })
-    const [purchaseState, setPurchaseState] = useState({ purchase: false })
+    const [purchaseState, setPurchaseState] = useState({ purchase: false });
+    const [purchasingState, setPurchasingState] = useState(false);
+
 
     const updatePurchaseHandler = (ing) => {
 
@@ -70,23 +74,44 @@ const BurgerBuilder = props => {
         setBurgerState({ ingredients: updatedIngredients, price: newPrice })
         updatePurchaseHandler(updatedIngredients);
     }
+    const purchasingHandler = () => {
+        setPurchasingState(true)
+    }
+
+    const purchaseCancel = () => {
+        setPurchasingState(false)
+    }
+    const purchaseContinue = () => {
+        alert("You continue")
+    }
 
     const disabledInfo = {
         ...burgerState.ingredients
     }
 
+    // eslint-disable-next-line no-unused-vars
     for (let key in disabledInfo) {
         disabledInfo[key] = disabledInfo[key] <= 0
     }
+
     return (
         <Aux>
+            <Modal show={purchasingState} modalClosed={purchaseCancel}>
+                <OrderSummary
+                    ingredients={burgerState.ingredients}
+                    purchaseCanceled={purchaseCancel}
+                    purchaseContinued={purchaseContinue}
+                />
+            </Modal>
             <Burger ingredients={burgerState.ingredients} />
             <BuildControls
                 ingredientAdded={addIngredientHandler}
                 ingredientRemoved={removeIngredientHandler}
                 disabled={disabledInfo}
                 price={burgerState.price}
-                purchase={purchaseState.purchase} />
+                purchase={purchaseState.purchase}
+                purchasing={purchasingHandler} />
+
 
         </Aux>
     )
