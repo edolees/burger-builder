@@ -101,6 +101,7 @@ const BurgerBuilder = props => {
                     ingredients={burgerState.ingredients}
                     purchaseCanceled={purchaseCancel}
                     purchaseContinued={purchaseContinue}
+                    price={burgerState.price}
                 />
             </Modal>
             <Burger ingredients={burgerState.ingredients} />
