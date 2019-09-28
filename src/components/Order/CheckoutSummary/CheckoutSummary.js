@@ -6,15 +6,15 @@ const CheckoutSummary = props => {
     return (
         <div className={styles.COS}>
             <h1>We hope it taste Well</h1>
-            <div className={styles.COSD}>
+            <div >
                 <Burger ingredients={props.ingredients} />
             </div>
             <Button
                 btnType="Danger"
-                clicked>Cancel</Button>
+                clicked={props.onCheckoutCancelled}>Cancel</Button>
             <Button
                 btnType="Success"
-                clicked>Continue</Button>
+                clicked={props.onCheckoutContinue}>Continue</Button>
         </div>
     )
 }

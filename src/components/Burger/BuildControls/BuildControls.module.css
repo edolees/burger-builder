@@ -7,9 +7,17 @@
     box-shadow: 0 2px 1px #ccc;
     margin: auto;
     padding: 10px 0;
-
+    
 }
 
+
+@media(min-height :800px){
+    .BuildControls{
+        bottom:0;
+        left:0;
+        position: fixed;
+    }
+}
 
 .OrderButton {
     background-color: #DAD735;

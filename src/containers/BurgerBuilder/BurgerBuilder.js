@@ -19,7 +19,13 @@ const INGREDIENT_PRICES = {
 const BurgerBuilder = props => {
 
     const [burgerState, setBurgerState] = useState({
-        ingredients: null
+        ingredients: {
+            salad: 0,
+            bacon: 0,
+            cheese: 0,
+            meat: 0,
+
+        }
     })
     const [price, setPrice] = useState(4.00)
     const [purchaseState, setPurchaseState] = useState({ purchase: false });
@@ -27,17 +33,17 @@ const BurgerBuilder = props => {
     const [loadingState, setLoadingState] = useState(false);
     const [errorState, setError] = useState(false)
 
-
-    useEffect(() => {
-        axios.get('/ingredients.json')
-            .then(res => {
-                setBurgerState({ ingredients: res.data });
-            })
-            .catch(error => {
-                setError(true);
-            })
-    }, []);
-
+    /*
+        useEffect(() => {
+            axios.get('/ingredients.json')
+                .then(res => {
+                    setBurgerState({ ingredients: res.data });
+                })
+                .catch(error => {
+                    setError(true);
+                })
+        }, []);
+    */
 
     const updatePurchaseHandler = (ing) => {
 
@@ -104,6 +110,7 @@ const BurgerBuilder = props => {
 
 
     const purchaseContinue = () => {
+        /*
         setLoadingState(true)
         const orders = {
             ingredients: burgerState.ingredients,
@@ -128,6 +135,18 @@ const BurgerBuilder = props => {
                 setLoadingState(false)
                 setPurchasingState(false);
             });
+            */
+        const queryParams = [];
+        for (let i in burgerState.ingredients)
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(burgerState.ingredients[i]));
+        queryParams.push('price=' + price)
+        const queryJoin = queryParams.join('&');
+
+        props.history.push({
+
+            pathname: '/checkout',
+            search: '?' + queryJoin
+        });
     }
 
 
