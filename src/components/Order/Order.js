@@ -4,6 +4,7 @@ import styles from './Order.module.css';
 const Order = props => {
 
     const ingredients = [];
+    // eslint-disable-next-line no-unused-vars
     for (let ingredientName in props.ingredients) {
         ingredients.push({
             name: ingredientName,

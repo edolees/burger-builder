@@ -10,7 +10,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 
 const INGREDIENT_PRICES = {
-    salad: 0.5,
+    lettuce: 0.5,
     cheese: 0.5,
     meat: 1.3,
     bacon: 0.7,
@@ -19,31 +19,25 @@ const INGREDIENT_PRICES = {
 const BurgerBuilder = props => {
 
     const [burgerState, setBurgerState] = useState({
-        ingredients: {
-            salad: 0,
-            bacon: 0,
-            cheese: 0,
-            meat: 0,
-
-        }
+        ingredients: {}
     })
     const [price, setPrice] = useState(4.00)
     const [purchaseState, setPurchaseState] = useState({ purchase: false });
     const [purchasingState, setPurchasingState] = useState(false);
-    const [loadingState, setLoadingState] = useState(false);
+    const loadingState = useState(false);
     const [errorState, setError] = useState(false)
 
-    /*
-        useEffect(() => {
-            axios.get('/ingredients.json')
-                .then(res => {
-                    setBurgerState({ ingredients: res.data });
-                })
-                .catch(error => {
-                    setError(true);
-                })
-        }, []);
-    */
+
+    useEffect(() => {
+        axios.get('/ingredients.json')
+            .then(res => {
+                setBurgerState({ ingredients: res.data });
+            })
+            .catch(error => {
+                setError(true);
+            })
+    }, []);
+
 
     const updatePurchaseHandler = (ing) => {
 
@@ -110,33 +104,8 @@ const BurgerBuilder = props => {
 
 
     const purchaseContinue = () => {
-        /*
-        setLoadingState(true)
-        const orders = {
-            ingredients: burgerState.ingredients,
-            price: price.toFixed(2),
-            customer: {
-                name: 'Eduardo Leon',
-                address: {
-                    street: 'GlWithThat Avenue',
-                    zipCode: '921983',
-                    country: 'Japan'
-                },
-                email: 'burger@nice.uhm',
-            },
-            deliveryMethod: 'fast',
-        }
-        axios.post('/orders.json', orders)
-            .then(response => {
-                setLoadingState(false);
-                setPurchasingState(false);
-            })
-            .catch(error => {
-                setLoadingState(false)
-                setPurchasingState(false);
-            });
-            */
         const queryParams = [];
+        // eslint-disable-next-line no-unused-vars
         for (let i in burgerState.ingredients)
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(burgerState.ingredients[i]));
         queryParams.push('price=' + price)
@@ -178,6 +147,7 @@ const BurgerBuilder = props => {
                     purchase={purchaseState.purchase}
                     purchasing={purchasingHandler} />
             </Aux>)
+
         orderSummary =
             <OrderSummary
                 ingredients={burgerState.ingredients}

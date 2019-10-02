@@ -25,6 +25,7 @@ const Checkout = props => {
         }
         setIngredients(ing)
         setPrice(price);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onCheckoutCancelled = () => {

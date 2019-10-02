@@ -5,16 +5,16 @@ import styles from './ContactData.module.css'
 import axios from '../../../axios-orders';
 
 const ContactData = props => {
-
-    const [contact, setContact] = useState({
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: '',
-        }
-    });
-
+    /*
+        const [contact, setContact] = useState({
+            name: '',
+            email: '',
+            address: {
+                street: '',
+                postalCode: '',
+            }
+        });
+    */
     const [loadingState, setLoadingState] = useState(false)
 
     const orderHandler = (event) => {

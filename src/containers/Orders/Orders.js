@@ -13,6 +13,7 @@ const Orders = () => {
         axios.get('/orders.json')
             .then(res => {
                 const fetchedOrders = [];
+                // eslint-disable-next-line no-unused-vars
                 for (let key in res.data) {
                     fetchedOrders.push({
                         ...res.data[key],
