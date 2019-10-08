@@ -3,36 +3,106 @@ import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import styles from './ContactData.module.css'
 import axios from '../../../axios-orders';
+import Input from '../../../components/UI/Input/Input';
 
 const ContactData = props => {
-    /*
-        const [contact, setContact] = useState({
-            name: '',
-            email: '',
-            address: {
-                street: '',
-                postalCode: '',
-            }
-        });
-    */
+
+    const [contact, setContact] = useState({
+        name: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'Your Name'
+            },
+            value: '',
+            validator: {
+                required: true,
+            },
+            valid: false,
+        },
+        street: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'Street Name'
+            },
+            value: '',
+            validator: {
+                required: true,
+            },
+            valid: false,
+            touched: false,
+        },
+        zipCode: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: ' Zip Code'
+            },
+            value: '',
+            validator: {
+                required: true,
+                minLength: 4,
+                maxLength: 5,
+            },
+            valid: false,
+            touched: false,
+        },
+        country: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'Country'
+            },
+            value: '',
+            validator: {
+                required: true,
+            },
+            valid: false,
+            touched: false,
+        },
+        email: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'email',
+                placeholder: 'Your Email'
+            },
+            value: '',
+            validator: {
+                required: true,
+            },
+            valid: false,
+            touched: false,
+        },
+        deliveryMethod: {
+            elementType: 'select',
+            elementConfig: {
+                options: [
+                    { value: 'fastest', displayValue: 'Fastest' },
+                    { value: 'cheapest', displayValue: 'Cheapest' },
+                ]
+            },
+            validator: {},
+            value: 'fastest',
+            valid: true,
+
+        }
+    });
+    const [isValidForm, setIsValidForm] = useState(false);
     const [loadingState, setLoadingState] = useState(false)
+
 
     const orderHandler = (event) => {
         event.preventDefault();
-        setLoadingState(true)
+        const contactData = {}
+        for (let key in contact) {
+            contactData[key] = contact[key].value
+        }
+        setLoadingState(true);
         const orders = {
             ingredients: props.ingredients,
             price: props.price,
-            customer: {
-                name: 'Eduardo Leon',
-                address: {
-                    street: 'GlWithThat Avenue',
-                    zipCode: '921983',
-                    country: 'Japan'
-                },
-                email: 'burger@nice.uhm',
-            },
-            deliveryMethod: 'fast',
+            orderData: contactData,
         }
         axios.post('/orders.json', orders)
             .then(response => {
@@ -43,13 +113,75 @@ const ContactData = props => {
                 setLoadingState(false)
             });
     }
+
+
+    const checkValidity = (value, rules) => {
+        let isValid = true;
+
+        if (rules.required) {
+            isValid = value.trim() !== '' && isValid;
+        }
+
+        if (rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid;
+        }
+
+        if (rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid;
+        }
+
+        return isValid;
+
+    }
+
+
+    const inputChangeHandler = (event, inputIdentifier) => {
+        const updatedContact = {
+            ...contact
+        }
+        const updatedContactElement = { ...updatedContact[inputIdentifier] }
+        updatedContactElement.value = event.target.value;
+        updatedContactElement.valid = checkValidity(updatedContactElement.value, updatedContactElement.validator);
+        updatedContactElement.touched = true;
+        updatedContact[inputIdentifier] = updatedContactElement;
+
+        let formIsValid = true;
+
+        for (let inputIdentifier in updatedContact) {
+
+            formIsValid = updatedContact[inputIdentifier].valid && formIsValid
+        }
+        setContact({ ...updatedContact });
+        setIsValidForm(formIsValid);
+    }
+
+    const formElementsArray = [];
+
+    for (let key in contact) {
+        formElementsArray.push({
+            id: key,
+            setup: contact[key]
+        });
+    }
+
     let form = (
-        <form>
-            <input type='text' name='name' placeholder='Name' />
-            <input type='text' name='email' placeholder='Email' />
-            <input type='text' name='street' placeholder='Address' />
-            <input type='text' name='postal' placeholder='Postal code' />
-            <Button btnType='Success' clicked={orderHandler}>Order</Button>
+        <form onSubmit={orderHandler}>
+            {formElementsArray.map(formElement => {
+
+                return (
+                    <Input
+                        key={formElement.id}
+                        elementType={formElement.setup.elementType}
+                        elementConfig={formElement.setup.elementConfig}
+                        value={formElement.setup.value}
+                        invalid={!formElement.setup.valid}
+                        shouldValidate={formElement.setup.validator}
+                        touched={formElement.setup.touched}
+                        changed={(event) => (inputChangeHandler(event, formElement.id))}
+                    />
+                )
+            })}
+            <Button btnType="Success" disabled={!isValidForm}>ORDER</Button>
         </form>
     );
     if (loadingState) {
