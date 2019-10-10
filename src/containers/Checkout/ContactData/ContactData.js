@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
+import { connect } from 'react-redux';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import styles from './ContactData.module.css'
@@ -100,7 +102,7 @@ const ContactData = props => {
         }
         setLoadingState(true);
         const orders = {
-            ingredients: props.ingredients,
+            ingredients: props.ings,
             price: props.price,
             orderData: contactData,
         }
@@ -194,5 +196,10 @@ const ContactData = props => {
         </div>
     )
 }
-
-export default ContactData;
+const mapStateToProps = state => {
+    return {
+        ings: state.ingredients,
+        price: state.price
+    }
+}
+export default connect(mapStateToProps)(ContactData);
