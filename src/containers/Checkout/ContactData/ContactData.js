@@ -6,6 +6,8 @@ import Spinner from '../../../components/UI/Spinner/Spinner'
 import styles from './ContactData.module.css'
 import axios from '../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actionObject from '../../../store/actions/index'
 
 const ContactData = props => {
 
@@ -91,7 +93,6 @@ const ContactData = props => {
         }
     });
     const [isValidForm, setIsValidForm] = useState(false);
-    const [loadingState, setLoadingState] = useState(false)
 
 
     const orderHandler = (event) => {
@@ -100,20 +101,14 @@ const ContactData = props => {
         for (let key in contact) {
             contactData[key] = contact[key].value
         }
-        setLoadingState(true);
-        const orders = {
+        const order = {
             ingredients: props.ings,
             price: props.price,
             orderData: contactData,
         }
-        axios.post('/orders.json', orders)
-            .then(response => {
-                setLoadingState(false);
-                props.history.push('/');
-            })
-            .catch(error => {
-                setLoadingState(false)
-            });
+
+        props.onOrderBurger(order)
+
     }
 
 
@@ -186,7 +181,7 @@ const ContactData = props => {
             <Button btnType="Success" disabled={!isValidForm}>ORDER</Button>
         </form>
     );
-    if (loadingState) {
+    if (props.loading) {
         form = <Spinner />
     }
     return (
@@ -198,8 +193,15 @@ const ContactData = props => {
 }
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        price: state.price
+        ings: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.price,
+        loading: state.order.loading,
     }
 }
-export default connect(mapStateToProps)(ContactData);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderBurger: (orderData) => dispatch(actionObject.purchaseBurger(orderData)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
