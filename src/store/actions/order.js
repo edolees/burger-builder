@@ -48,6 +48,8 @@ export const fetchOrdersSuccess = (orders) => {
     }
 }
 export const fetchOrdersFail = (error) => {
+    console.log(error);
+
     return {
         type: actionTypes.FETCH_ORDERS_FAIL,
         error: error,
@@ -60,11 +62,11 @@ export const fetchOrdersStart = () => {
 }
 
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
 
     return dispatch => {
         dispatch(fetchOrdersStart());
-        axios.get('/orders.json')
+        axios.get('/orders.json?auth=' + token)
             .then(res => {
                 const fetchedOrders = [];
                 // eslint-disable-next-line no-unused-vars

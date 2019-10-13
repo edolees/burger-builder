@@ -8,9 +8,8 @@ import * as actionObject from '../../store/actions/index';
 
 
 const Orders = props => {
-
     useEffect(() => {
-        props.onFetchOrders()
+        props.onFetchOrders(props.token)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -38,11 +37,12 @@ const mapStateToProps = state => {
     return {
         orders: state.order.orders,
         loading: state.order.loading,
+        token: state.auth.token
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders: () => dispatch(actionObject.fetchOrders())
+        onFetchOrders: (token) => dispatch(actionObject.fetchOrders(token))
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));
