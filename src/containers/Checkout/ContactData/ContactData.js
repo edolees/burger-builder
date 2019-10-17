@@ -105,6 +105,7 @@ const ContactData = props => {
             ingredients: props.ings,
             price: props.price,
             orderData: contactData,
+            userId: props.userId
         }
 
         props.onOrderBurger(order, props.token)
@@ -208,7 +209,8 @@ const mapStateToProps = state => {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.price,
         loading: state.order.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId,
     }
 }
 

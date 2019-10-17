@@ -10,7 +10,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 
 const Orders = props => {
     useEffect(() => {
-        props.onFetchOrders(props.token)
+        props.onFetchOrders(props.token, props.userId)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -38,12 +38,13 @@ const mapStateToProps = state => {
     return {
         orders: state.order.orders,
         loading: state.order.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders: (token) => dispatch(actionObject.fetchOrders(token))
+        onFetchOrders: (token, userId) => dispatch(actionObject.fetchOrders(token, userId))
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));

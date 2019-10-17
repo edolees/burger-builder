@@ -62,11 +62,11 @@ export const fetchOrdersStart = () => {
 }
 
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(fetchOrdersStart());
-        console.log(token);
-        axios.get('/orders.json?auth=' + token)
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        axios.get('/orders.json' + queryParams)
             .then(res => {
                 const fetchedOrders = [];
                 // eslint-disable-next-line no-unused-vars
