@@ -107,7 +107,7 @@ const ContactData = props => {
             orderData: contactData,
         }
 
-        props.onOrderBurger(order)
+        props.onOrderBurger(order, props.token)
 
     }
 
@@ -208,12 +208,13 @@ const mapStateToProps = state => {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.price,
         loading: state.order.loading,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBurger: (orderData) => dispatch(actionObject.purchaseBurger(orderData)),
+        onOrderBurger: (orderData, token) => dispatch(actionObject.purchaseBurger(orderData, token)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));

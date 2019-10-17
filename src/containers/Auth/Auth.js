@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom';
 import styles from './Auth.module.css';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
@@ -39,6 +40,13 @@ const Auth = props => {
 
     });
     const [isSignUp, setSignUp] = useState(true);
+
+    useEffect(() => {
+        if (!props.buildingBurger && props.authRedirectPath !== '/') {
+            props.onSetAuthRedirectPath()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     const checkValidity = (value, rules) => {
         let isValid = true;
         if (!rules) {
@@ -125,8 +133,13 @@ const Auth = props => {
             <p>{props.error.message}</p>
         )
     }
+    let authRedirect = null;
+    if (props.isAuthenticated) {
+        authRedirect = <Redirect to={props.authRedirectPath} />
+    }
     return (
         <div className={styles.Auth}>
+            {authRedirect}
             {errorMessage}
             <form onSubmit={submitHandler}>
                 {form}
@@ -134,7 +147,6 @@ const Auth = props => {
                     Submit
                 </Button>
             </form>
-
             <Button clicked={switchAuthModeHandler} btnType='Danger'>{isSignUp ? 'Sign In' : 'Sign Up'}?</Button>
         </div>
     )
@@ -142,13 +154,17 @@ const Auth = props => {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null,
+        buildingBurger: state.burgerBuilder.building,
+        authRedirectPath: state.auth.authRedirectPath
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, isSign) => dispatch(actionObject.auth(email, password, isSign)),
+        onSetAuthRedirectPath: () => dispatch(actionObject.setAuthRedirectPath('/'))
 
     }
 }

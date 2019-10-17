@@ -8,9 +8,7 @@ const initialState = {
 }
 
 const purchaseInit = (state, action) => updatedObject(state, { purchased: false })
-
 const purchaseBurgerStart = (state, action) => updatedObject(state, { purchased: true })
-
 const purchaseBurgerSuccess = (state, action) => {
     const newOrder = updatedObject(action.orderData, { id: action.id.name });
     const updatedPurchaseSuccess = {
@@ -20,8 +18,9 @@ const purchaseBurgerSuccess = (state, action) => {
     }
     return updatedObject(state, updatedPurchaseSuccess);
 }
-
 const purchaseBurgerFail = (state, action) => updatedObject(state, { loading: false });
+
+
 const fetchOrdersStart = (state, action) => updatedObject(state, { loading: true });
 const fetchOrdersSuccess = (state, action) => {
     const updatedFetchSuccess = {
