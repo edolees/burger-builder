@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+
 import styles from './Auth.module.css';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
+
 import * as actionObject from '../../store/actions/index';
+import { updatedObject, checkValidity } from '../../shared/utility';
 
 const Auth = props => {
     const [controls, setControls] = useState({
@@ -43,52 +46,20 @@ const Auth = props => {
 
     useEffect(() => {
         if (!props.buildingBurger && props.authRedirectPath !== '/') {
-            props.onSetAuthRedirectPath()
+            props.onSetAuthRedirectPath();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    const checkValidity = (value, rules) => {
-        let isValid = true;
-        if (!rules) {
-            return true
-        }
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-
-        if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid
-        }
-
-        if (rules.isNumeric) {
-            const pattern = /^\d+$/;
-            isValid = pattern.test(value) && isValid
-        }
-
-        return isValid;
-
-    }
+    }, []);
 
     const inputChangeHandler = (event, controlName) => {
-        const updatedControls = {
-            ...controls,
-            [controlName]: {
-                ...controls[controlName],
+        const updatedControls = updatedObject(controls, {
+            [controlName]: updatedObject(controls[controlName], {
                 value: event.target.value,
                 valid: checkValidity(event.target.value, controls[controlName].validator),
-                touched: true
-            }
-        }
-        setControls(updatedControls)
+                touched: true,
+            })
+        });
+        setControls(updatedControls);
     }
 
     const submitHandler = (event) => {
@@ -108,7 +79,8 @@ const Auth = props => {
             id: key,
             setup: controls[key]
         });
-    }
+    };
+
     let form = formElementsArray.map(formElement => (
         <Input
             key={formElement.id}
@@ -124,19 +96,21 @@ const Auth = props => {
     ));
 
     if (props.loading) {
-        form = <Spinner />
-    }
+        form = (<Spinner />);
+    };
 
     let errorMessage = null
     if (props.error) {
         errorMessage = (
             <p>{props.error.message}</p>
-        )
-    }
+        );
+    };
+
     let authRedirect = null;
     if (props.isAuthenticated) {
         authRedirect = <Redirect to={props.authRedirectPath} />
-    }
+    };
+
     return (
         <div className={styles.Auth}>
             {authRedirect}
@@ -149,8 +123,8 @@ const Auth = props => {
             </form>
             <Button clicked={switchAuthModeHandler} btnType='Danger'>{isSignUp ? 'Sign In' : 'Sign Up'}?</Button>
         </div>
-    )
-}
+    );
+};
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
@@ -158,15 +132,15 @@ const mapStateToProps = state => {
         isAuthenticated: state.auth.token !== null,
         buildingBurger: state.burgerBuilder.building,
         authRedirectPath: state.auth.authRedirectPath
-    }
-}
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, isSign) => dispatch(actionObject.auth(email, password, isSign)),
         onSetAuthRedirectPath: () => dispatch(actionObject.setAuthRedirectPath('/'))
 
-    }
-}
+    };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth)
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
