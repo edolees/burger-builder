@@ -12,30 +12,30 @@ const INGREDIENT_PRICES = {
     cheese: 0.5,
     meat: 1.3,
     bacon: 0.7,
-}
+};
 
 const addIngredient = (state, action) => {
-    const updatedIngAdd = { [action.ingredientName]: state.ingredients[action.ingredientName] + 1 }
-    const updatedIngredientsAdd = updatedObject(state.ingredients, updatedIngAdd)
+    const updatedIngAdd = { [action.ingredientName]: state.ingredients[action.ingredientName] + 1 };
+    const updatedIngredientsAdd = updatedObject(state.ingredients, updatedIngAdd);
     const updatedStateAdd = {
         ingredients: updatedIngredientsAdd,
         price: state.price + INGREDIENT_PRICES[action.ingredientName],
         building: true
-    }
+    };
     return updatedObject(state, updatedStateAdd);
-}
+};
 
 const removeIngredient = (state, action) => {
-    const updatedIngRemove = { [action.ingredientName]: state.ingredients[action.ingredientName] - 1 }
-    const updatedIngredientsRemove = updatedObject(state.ingredients, updatedIngRemove)
+    const updatedIngRemove = { [action.ingredientName]: state.ingredients[action.ingredientName] - 1 };
+    const updatedIngredientsRemove = updatedObject(state.ingredients, updatedIngRemove);
     const updatedStateRemove = {
         ingredients: updatedIngredientsRemove,
         price: state.price + INGREDIENT_PRICES[action.ingredientName],
         building: true
 
-    }
+    };
     return updatedObject(state, updatedStateRemove);
-}
+};
 
 const setIngredients = (state, action) => {
     const updatedIngSet = {
@@ -49,9 +49,9 @@ const setIngredients = (state, action) => {
         error: false,
         building: false
 
-    }
-    return updatedObject(state, updatedIngSet)
-}
+    };
+    return updatedObject(state, updatedIngSet);
+};
 
 const fetchIngredientsFailed = (state, action) => updatedObject(state, { error: true });
 
@@ -62,7 +62,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SET_INGREDIENTS: return setIngredients(state, action);
         case actionTypes.FETCH_INGREDIENTS_FAILED: return fetchIngredientsFailed(state, action);
         default: return state
-    }
-}
+    };
+};
 
 export default reducer;

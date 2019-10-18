@@ -5,23 +5,37 @@ const initialState = {
     orders: [],
     loading: false,
     purchased: false,
-}
+};
 
-const purchaseInit = (state, action) => updatedObject(state, { purchased: false })
-const purchaseBurgerStart = (state, action) => updatedObject(state, { purchased: true })
+const purchaseInit = (state, action) => updatedObject(state, {
+    purchased: false
+});
+
+const purchaseBurgerStart = (state, action) => updatedObject(state, {
+    purchased: true
+});
+
 const purchaseBurgerSuccess = (state, action) => {
-    const newOrder = updatedObject(action.orderData, { id: action.id.name });
+    const newOrder = updatedObject(action.orderData, {
+        id: action.id.name
+    });
+
     const updatedPurchaseSuccess = {
         loading: false,
         purchased: true,
         orders: state.orders.concat(newOrder)
     }
     return updatedObject(state, updatedPurchaseSuccess);
-}
-const purchaseBurgerFail = (state, action) => updatedObject(state, { loading: false });
+};
 
+const purchaseBurgerFail = (state, action) => updatedObject(state, {
+    loading: false
+});
 
-const fetchOrdersStart = (state, action) => updatedObject(state, { loading: true });
+const fetchOrdersStart = (state, action) => updatedObject(state, {
+    loading: true
+});
+
 const fetchOrdersSuccess = (state, action) => {
     const updatedFetchSuccess = {
         orders: action.orders,
@@ -29,8 +43,10 @@ const fetchOrdersSuccess = (state, action) => {
     }
     return updatedObject(state, updatedFetchSuccess);
 };
-const fetchOrdersFail = (state, action) => updatedObject(state, { loading: false })
 
+const fetchOrdersFail = (state, action) => updatedObject(state, {
+    loading: false
+});
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -43,5 +59,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_ORDERS_FAIL: return fetchOrdersFail(state, action);
         default: return state
     }
-}
+};
+
 export default reducer;

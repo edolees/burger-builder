@@ -25,8 +25,6 @@ const BurgerBuilder = props => {
 
     useEffect(() => {
         props.onInitIngredients();
-        console.log(props);
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
