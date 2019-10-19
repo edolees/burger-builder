@@ -164,7 +164,7 @@ const ContactData = props => {
                     />
                 )
             })}
-            <Button btnType="Success" disabled={!isValidForm}>ORDER</Button>
+            <Button btnMode='OrderButton' disabled={!isValidForm}>ORDER</Button>
         </form>
     );
 
