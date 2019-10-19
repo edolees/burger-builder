@@ -11,22 +11,20 @@
 }
 
 .InputElement {
-  outline: none;
-  border: 1px solid #ccc;
-  background-color: white;
-  font: inherit;
-  padding: 6px 10px;
   width: 100%;
-  display: block;
-  box-sizing: border-box;
-}
-
-.InputElement:focus {
+  padding: 20px 0px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #435160;
   outline: none;
-  background-color: #ccc;
+  color: #6d7781;
+  font-size: 16px;
+}
+.InputElement::-webkit-input-placeholder {
+  color: #435160;
+  font-size: 12px;
 }
 
 .Invalid {
-  border: 1px solid red;
-  background-color: lightcoral;
+  border-bottom: 1px solid red;
 }

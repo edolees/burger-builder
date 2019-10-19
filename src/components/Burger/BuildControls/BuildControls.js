@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
-
+import Button from '../../UI/Button/Button'
 
 const controls = [
     { label: 'Lettuce', type: 'lettuce' },
@@ -22,12 +22,12 @@ const BuildControls = props => {
                     disabled={props.disabled[el.type]}
                 />
             ))}
-            <button
-                className={styles.OrderButton}
+            <Button
+                btnMode='OrderButton'
                 disabled={!props.purchase}
-                onClick={props.purchasing}>
+                clicked={props.purchasing}>
                 {props.isAuth ? 'Order Now' : 'SIGN UP TO ORDER'}
-            </button>
+            </Button>
         </div>
     )
 }

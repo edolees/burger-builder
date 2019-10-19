@@ -16,7 +16,7 @@ const Auth = props => {
             elementType: 'input',
             elementConfig: {
                 type: 'email',
-                placeholder: 'Mail Address'
+                placeholder: 'E-Mail Address'
             },
             value: '',
             validator: {
@@ -30,7 +30,7 @@ const Auth = props => {
             elementType: 'input',
             elementConfig: {
                 type: 'password',
-                placeholder: '****'
+                placeholder: 'Password'
             },
             value: '',
             validator: {
@@ -111,17 +111,27 @@ const Auth = props => {
         authRedirect = <Redirect to={props.authRedirectPath} />
     };
 
+    const switchingOnSignUp = (valueTrue, valueFalse) => {
+        if (isSignUp) {
+            return valueTrue
+        } else {
+            return valueFalse
+        }
+    }
+
     return (
         <div className={styles.Auth}>
+            <h2>{isSignUp ? 'Register' : 'Log In'}</h2>
             {authRedirect}
             {errorMessage}
             <form onSubmit={submitHandler}>
                 {form}
-                <Button btnType="Success">
-                    Submit
+                <Button btnMode='ButtonForm' btnType="SucessForm">
+                    {switchingOnSignUp('Sign Up', 'Sign In')}
                 </Button>
+
             </form>
-            <Button clicked={switchAuthModeHandler} btnType='Danger'>{isSignUp ? 'Sign In' : 'Sign Up'}?</Button>
+            <p onClick={switchAuthModeHandler}>{isSignUp ? 'Already have an account' : 'Do you want to Register'}?</p>
         </div>
     );
 };

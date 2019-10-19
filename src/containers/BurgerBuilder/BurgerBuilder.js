@@ -17,7 +17,7 @@ import * as actionObject from '../../store/actions/index';
 
 
 
-const BurgerBuilder = props => {
+export const BurgerBuilder = props => {
 
     const [purchasingState, setPurchasingState] = useState(false);
     const loadingState = useState(false);

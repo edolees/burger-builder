@@ -1,11 +1,41 @@
 .Auth {
-  margin: 20px auto;
   width: 80%;
   text-align: center;
-  box-shadow: 0 2px 3px #ccc;
-  border: 1px solid #eee;
   padding: 10px;
   box-sizing: border-box;
+  position: absolute;
+  left: 50%; /* relative to nearest positioned ancestor or body element */
+  top: 10%; /*  relative to nearest positioned ancestor or body element */
+  transform: translate(
+    -50%,
+    -10%
+  ); /* relative to element's height & width */
+}
+
+.Auth h2 {
+  color: #6d7781;
+  font-family: 'Sofia', cursive;
+  font-size: 15px;
+  font-weight: bold;
+  font-size: 3.6em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.Auth p {
+  margin-top: 30px;
+  display: block;
+  font-size: 13px;
+  text-align: center;
+  font-weight: bold;
+}
+.Auth p:hover {
+  margin-top: 30px;
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  color: #6d7781;
+  cursor: pointer;
 }
 
 @media (min-width: 600px) {
